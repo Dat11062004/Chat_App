@@ -4,8 +4,8 @@ import { ChatContext } from "../../context/ChatContext";
 import { AuthContext } from "../../context/AuthContext";
 
 const RightSideBar = ({ detailUser, setDetailUser }) => {
-  const { setSelectedUser, selectedUser, messages } = useContext(ChatContext);
-  const { onlineUsers, logout } = useContext(AuthContext);
+  const { selectedUser, messages } = useContext(ChatContext);
+  const { onlineUsers } = useContext(AuthContext);
   const [msgImages, setMsgImages] = useState([]);
   // Get all the images from messages and set them to state
   useEffect(() => {
@@ -58,7 +58,7 @@ const RightSideBar = ({ detailUser, setDetailUser }) => {
         {/* media */}
         <div className="px-5 text-xs">
           <p>Media</p>
-          <div className="mt-2 xl:max-h-[230px] max-xl:max-h-[450px] max-lg:max-h-[600px] overflow-y-scroll grid grid-cols-2 gap-4 opacity-80">
+          <div className="mt-2  overflow-y-scroll grid max-sm:grid-cols-1 sm:grid-cols-2 gap-4 opacity-80">
             {msgImages.map((url, index) => (
               <div
                 className="cursor-pointer rounded "
@@ -74,16 +74,6 @@ const RightSideBar = ({ detailUser, setDetailUser }) => {
             ))}
           </div>
         </div>
-        {/* button */}
-        <button
-          onClick={() => {
-            setSelectedUser(null);
-            logout();
-          }}
-          className=" transform left-1/2  -translate-x-1/2  cursor-pointer absolute text-sm py-2 px-20 bottom-1 bg-violet-600 hover:bg-blue-300 rounded-full"
-        >
-          Logout
-        </button>
       </div>
     )
   );

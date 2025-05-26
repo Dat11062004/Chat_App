@@ -18,6 +18,9 @@ const SideBar = ({ detailUser }) => {
     deleteMessages,
   } = useContext(ChatContext);
   const { logout, onlineUsers } = useContext(AuthContext);
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isDelete, setIsDelete] = useState(null);
+  // const [isPcMenuOpen, setPcMenuOpen] = useState(window.innerWidth >= 1280);
   const [input, setInput] = useState(false);
   const navigate = useNavigate();
   // Lọc người dùng theo tìm kiếm
@@ -39,20 +42,28 @@ const SideBar = ({ detailUser }) => {
     // + nếu màn hình >768px thì sẽ hiển thị bình thường
     <div
       className={`bg-[#818582]/10 h-full p-5 rounded-r-xl overflow-y-scroll text-white ${
-        selectedUser ? "max-lg:hidden" : ""
-      } ${detailUser ? "max-lg:block" : "max-lg:hidden"}`}
+        selectedUser ? "max-xl:hidden" : ""
+      } ${detailUser ? "max-xl:block" : "max-xl:hidden"}`}
     >
       <div className="pb-5">
         {/* Logo và thanh menu hiển thị*/}
         <div className="flex justify-between items-center">
           <img src={assets.logo} alt="logo" className="max-w-40 w-20" />
-          <div className="relative py-2 group">
+          <div className="relative py-2 ">
             <img
+              onClick={() => {
+                setMenuOpen((prev) => !prev);
+              }}
               src={assets.menu_icon}
               alt="logo"
               className="max-h-5 cursor-pointer"
             />
-            <div className="absolute top-full right-0 z-0 w-32 p-5 rounded-md bg-[#282142] border border-gray-600 text-gray-100 hidden group-hover:block">
+            <div
+              className={`absolute top-full dropdown-menu right-0 pt-4 z-0 w-32 p-5 rounded-md bg-[#282142] border border-gray-600 text-gray-100 ${
+                isMenuOpen ? "block" : "hidden"
+              }
+              }`}
+            >
               <p
                 onClick={() => navigate("/profile")}
                 className="cursor-pointer text-sm"
@@ -89,7 +100,7 @@ const SideBar = ({ detailUser }) => {
         {/* Cú pháp aspect-[x/y] là cú pháp tuỳ chỉnh tỷ lệ khung hình trong Tailwind CSS.
 
 aspect-[1/1] nghĩa là chiều rộng và chiều cao bằng nhau, tức là một hình vuông. */}
-        <div className="flex flex-col mt-8">
+        <div className="flex flex-col mt-8 ">
           {filteredUsers.map((user, index) => (
             <div
               key={index}
@@ -119,17 +130,26 @@ aspect-[1/1] nghĩa là chiều rộng và chiều cao bằng nhau, tức là m�
                   {unseenMessages[user._id]}
                 </p>
               )}
-              <div className="absolute top-5 right-1 group">
+              <div className="absolute top-5 right-1">
                 <img
+                  onClick={(e) => {
+                    e.stopPropagation(); // Ngăn sự kiện lan ra cha nếu cần
+                    setIsDelete(isDelete === user._id ? null : user._id);
+                  }}
                   src={assets.menu_icon}
                   alt=""
                   className="max-h-5 cursor-pointer"
                 />
-                <div className="absolute top-full right-0 z-1 w-25 p-5 rounded-md bg-[#282142] border border-gray-600 text-gray-100 hidden group-hover:block">
+                <div
+                  className={`absolute top-full right-0 z-1 w-25 p-5 rounded-md bg-[#282142] border border-gray-600 text-gray-100 ${
+                    isDelete === user._id ? "block" : "hidden"
+                  }`}
+                >
                   <button
                     onClick={(e) => {
                       // Ngăn chặn click lan truyền
                       e.stopPropagation();
+
                       deleteMessages(user._id);
                       setSelectedUser(null);
                     }}

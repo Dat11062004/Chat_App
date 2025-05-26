@@ -54,7 +54,7 @@ const ChatContainer = ({ detailUser, setDetailUser }) => {
   }, [messages]);
   return selectedUser ? (
     <div
-      className={`h-full overflow-scroll relative backdrop-blur-lg ${
+      className={`h-full overflow-y-scroll overflow-x-hidden scroll-smooth relative backdrop-blur-lg ${
         detailUser ? "max-xl:block" : "max-xl:hidden"
       }`}
     >
@@ -84,12 +84,12 @@ const ChatContainer = ({ detailUser, setDetailUser }) => {
           onClick={() => setSelectedUser(null)}
           src={assets.arrow_icon}
           alt=""
-          className="lg:hidden max-w-7"
+          className="xl:hidden max-w-7"
         />
         <img src={assets.help_icon} alt="" className="max-md:hidden max-w-5" />
       </div>
       {/* Chat */}
-      <div className="flex flex-col h-[calc(100%-120px)] overflow-y-scroll p-3 pb-6">
+      <div className="flex flex-col h-[calc(100%-120px)] overflow-y-scroll overflow-x-hidden scroll-smooth p-3 pb-6">
         {/* Hiển thị các tin nhắn */}
         {messages.map((msg, index) => (
           <div
